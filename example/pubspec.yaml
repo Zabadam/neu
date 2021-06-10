@@ -1,0 +1,16 @@
+name: neu_example
+description: Example usage of Neu decorations.
+version: 0.1.0
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  neu:
+    path: ../
+
+flutter:
+  uses-material-design: true
