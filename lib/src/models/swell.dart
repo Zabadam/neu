@@ -36,7 +36,7 @@ enum Swell {
 }
 
 extension SwellUtils on Swell {
-  Degree get _asDegree {
+  Degree get degree {
     switch (this) {
       case Swell.superemboss:
         return Degree.SUPER;
@@ -56,7 +56,7 @@ extension SwellUtils on Swell {
   ///
   /// #### Super/deboss *is not* swollen:
   /// - returns `false`
-  bool get asBool {
+  bool get isSwollen {
     switch (this) {
       case Swell.superemboss:
         return true;
@@ -69,53 +69,13 @@ extension SwellUtils on Swell {
     }
   }
 
-  /// Returns a value by which multiplication may be acceptable;
-  /// that is, a relatively small scalar like `1.0` or `1.5`.
-  double get asScalar => (_asDegree == Degree.SUPER) ? 1.5 : 1.0;
-
-  /// This conversion is useful in the case of [Neu.shapeShadows] where the
-  /// offset of appropriately-shaded shadows is not only important, but the
-  /// progression of the gradient as well -- considering that
-  /// [morph.ShapeShadow] accepts a [Gradient] over a simple color.
-  ///
-  /// The `considerCurvature` serves to transfer its "super" status.
-  ///
-  /// - Super/emboss return convex
-  ///   - "super" if `considerCurvature` is "super"
-  /// - Super/deboss return concave
-  ///   - "super" if `considerCurvature` is "super"
-  Curvature toCurvature(Curvature considerCurvature) {
-    switch (this) {
-      case Swell.superemboss:
-        // Checks for `considerCurvature` to make an exact match
-        // return (considerCurvature == Curvature.superconvex)
-
-        // Checks for `considerCurvature` to make a [_Degree] match
-        return (considerCurvature._asDegree == Degree.SUPER)
-            ? Curvature.superconvex
-            : Curvature.convex;
-      case Swell.emboss:
-        // return (considerCurvature == Curvature.superconvex)
-        return (considerCurvature._asDegree == Degree.SUPER)
-            ? Curvature.superconvex
-            : Curvature.convex;
-      case Swell.deboss:
-        // return (considerCurvature == Curvature.superconcave)
-        return (considerCurvature._asDegree == Degree.SUPER)
-            ? Curvature.superconcave
-            : Curvature.concave;
-      case Swell.superdeboss:
-        // return (considerCurvature == Curvature.superconcave)
-        return (considerCurvature._asDegree == Degree.SUPER)
-            ? Curvature.superconcave
-            : Curvature.concave;
-    }
-  }
+  /// Returns a relatively small scalar as `1.0` or `1.5`.
+  double get scalar => (degree == Degree.SUPER) ? 1.5 : 1.0;
 
   /// Returns a value by which interger division may be acceptable;
   /// that is, a relatively small scalar like `1.0` or `2.0` or the
   /// passed `depth` itself as a neutralizing divisor.
-  double toShadeDivisor({required int depth}) {
+  double divisor({required int depth}) {
     switch (this) {
       case Swell.superemboss:
         // Will actually brighten the color as a negative parameter to
@@ -124,7 +84,7 @@ extension SwellUtils on Swell {
       case Swell.emboss:
         // Will actually result in the resultant color of `color.withBlack()`
         // in [Neu.linearGradient] being shaded by `withBlack(1)`. Close.
-        return depth * 1.0;
+        return depth.toDouble();
       case Swell.deboss:
         // Has [Neu.linearGradient] shade its `color.withBlack(depth ~/ 2.0)`
         // so its `depth` is halved:
@@ -133,6 +93,38 @@ extension SwellUtils on Swell {
         // Has [Neu.linearGradient] shade its `color.withBlack(depth)`
         // because its `depth` is divided by 1.0:
         return 1.0;
+    }
+  }
+
+  /// This conversion is useful in the case of [Neu.shapeShadows] where the
+  /// offset of appropriately-shaded shadows is not only important, but the
+  /// progression of the gradient as well -- considering that
+  /// [morph.ShapeShadow] accepts a [Gradient] over a simple color.
+  ///
+  /// The [degree] serves to transmit "super" status.
+  ///
+  /// - Super/emboss return convex
+  ///   - "super" if `degree` is "super"
+  /// - Super/deboss return concave
+  ///   - "super" if `degree` is "super"
+  Curvature toCurvature(Degree degree) {
+    switch (this) {
+      case Swell.superemboss:
+        return (degree == Degree.SUPER)
+            ? Curvature.superconvex
+            : Curvature.convex;
+      case Swell.emboss:
+        return (degree == Degree.SUPER)
+            ? Curvature.superconvex
+            : Curvature.convex;
+      case Swell.deboss:
+        return (degree == Degree.SUPER)
+            ? Curvature.superconcave
+            : Curvature.concave;
+      case Swell.superdeboss:
+        return (degree == Degree.SUPER)
+            ? Curvature.superconcave
+            : Curvature.concave;
     }
   }
 }

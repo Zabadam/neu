@@ -34,7 +34,7 @@ enum Curvature {
 }
 
 extension CurvatureUtils on Curvature {
-  Degree get _asDegree {
+  Degree get degree {
     switch (this) {
       case Curvature.flat:
         return Degree.STANDARD;
@@ -49,8 +49,8 @@ extension CurvatureUtils on Curvature {
     }
   }
 
-  List<Color> toColors({
-    Color color = lightWhite,
+  List<Color> toColors(
+    Color color, {
     int depth = 25,
   }) {
     switch (this) {
@@ -69,17 +69,25 @@ extension CurvatureUtils on Curvature {
           color.withWhite(depth),
         ];
       case Curvature.convex:
-        return [
-          color.withWhite(depth),
-          color,
-          color.withBlack(depth),
-        ];
+        return Curvature.concave
+            .toColors(color, depth: depth)
+            .reversed
+            .toList();
+      // return [
+      //   color.withWhite(depth),
+      //   color,
+      //   color.withBlack(depth),
+      // ];
       case Curvature.superconvex:
-        return [
-          color.withWhite((depth * 1.5).round()),
-          color,
-          color.withBlack((depth * 1.55).round()),
-        ];
+        return Curvature.superconcave
+            .toColors(color, depth: depth)
+            .reversed
+            .toList();
+      // return [
+      //   color.withWhite((depth * 1.5).round()),
+      //   color,
+      //   color.withBlack((depth * 1.55).round()),
+      // ];
     }
   }
 }

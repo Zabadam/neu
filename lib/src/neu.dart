@@ -2,19 +2,126 @@
 library neu;
 
 import 'common.dart';
-import 'models/curvature.dart';
-import 'models/swell.dart';
 
-// import 'package:animated_styled_widget/animated_styled_widget.dart' as morph;
-
-// import 'goodies.dart';
-
+/// TODO: Write doc.
+///
 /// - [Neu.linearGradient]
+/// - [Neu.textStyle]
 /// - [Neu.boxShadows]
-//   - [Neu.shapeShadows]
 /// - [Neu.boxDecoration]
 /// - [Neu.shapeDecoration]
-abstract class Neu {
+class Neu with Diagnosticable {
+// abstract class Neu with Diagnosticable {
+  // /// The abstract class [Neu] is not intended to ever have a constructed
+  // /// [Object]. [Neu]'s static methods are meant to be accessed directly such
+  // /// as `Neu.linearGradient(...)`.
+  // ///
+  // /// Without this private constructor†, [Neu] would have a no-parameter
+  // /// constructor by default. This private constructor is never called
+  // /// internally by this package nor is it accessible outside of it, but acts
+  // /// to disable the auto-establishment of a constructor by Dart.
+  // ///
+  // /// † Dart supports named constructors, such as `Neu.named(...)`, in place of
+  // /// or in addition to default constructors, such as `Neu(...)`. \
+  // /// The library-private identifier `_` makes this named constructor method
+  // /// `Neu._(...)` inaccessible outside of this library and will hide any [Neu]
+  // /// constructors from generated documentation.
+  // Neu._();
+
+  /// TODO: Write doc.
+  const Neu({
+    required this.color,
+    required this.depth,
+    this.spread = 7.5,
+    this.curvature = Curvature.convex,
+    this.swell = Swell.emboss,
+    this.borderRadius = BorderRadius.zero,
+    this.shape = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+    ),
+  });
+
+  // /// TODO: Write doc.
+  // final NeuType type;
+
+  /// TODO: Write doc.
+  /// All properties employ `color`.
+  final Color color;
+
+  /// TODO: Write doc.
+  /// All properties employ `depth`.
+  final int depth;
+
+  /// TODO: Write doc.
+  /// All properties employ `spread` except for [buildGradient].
+  final double spread;
+
+  /// TODO: Write doc.
+  /// All properties employ `curvature` except for [buildBoxShadows].
+  final Curvature curvature;
+
+  /// TODO: Write doc.
+  /// All properties employ `swell`.
+  final Swell swell;
+
+  /// TODO: Write doc.
+  /// Employed only by [buildBoxDecoration]. Default is [BorderRadius.zero].
+  ///
+  /// Provide a value such as `BorderRadius.all(Radius.circular(15.0))` for
+  /// rounded corners.
+  final BorderRadius borderRadius;
+
+  /// TODO: Write doc.
+  /// Employed only by [buildShapeDecoration]. Default is
+  /// [RoundedRectangleBorder] with a `borderRadius` of `5.0`.
+  final ShapeBorder shape;
+
+  // /// TODO: Write doc.
+  // final Widget? child;
+
+  /// TODO: Write doc.
+  /// Does not consider [spread] nor [shape], [borderRadius].
+  Gradient get buildGradient => Neu.linearGradient(
+      color: color, curvature: curvature, swell: swell, depth: depth);
+
+  /// TODO: Write doc.
+  /// Does not consider [shape], [borderRadius].
+  TextStyle get buildTextStyle => Neu.textStyle(
+        color: color,
+        curvature: curvature,
+        swell: swell,
+        depth: depth,
+        spread: spread,
+      );
+
+  /// TODO: Write doc.
+  /// Does not consider [curvature] nor [shape], [borderRadius].
+  List<BoxShadow> get buildBoxShadows =>
+      Neu.boxShadows(color: color, swell: swell, depth: depth, spread: spread);
+
+  /// TODO: Write doc.
+  /// Does not consider [shape].
+  BoxDecoration get buildBoxDecoration => Neu.boxDecoration(
+        color: color,
+        curvature: curvature,
+        swell: swell,
+        depth: depth,
+        spread: spread,
+        borderRadius: borderRadius,
+      );
+
+  /// TODO: Write doc.
+  /// Does not consider [borderRadius].
+  ShapeDecoration get buildShapeDecoration => Neu.shapeDecoration(
+        color: color,
+        curvature: curvature,
+        swell: swell,
+        depth: depth,
+        spread: spread,
+        shape: shape,
+      );
+
+  /// TODO: Write doc.
   static Gradient linearGradient({
     Color color = lightWhite,
     Curvature curvature = Curvature.convex,
@@ -22,34 +129,40 @@ abstract class Neu {
     int depth = 25,
     AlignmentGeometry begin = Alignment.topLeft,
     AlignmentGeometry end = Alignment.bottomRight,
+    TileMode tileMode = TileMode.clamp,
+    GradientTransform? transform,
   }) =>
       LinearGradient(
         colors: curvature.toColors(
-          color:
-              color.withBlack(depth ~/ swell.toShadeDivisor(depth: depth) - 1),
+          color.withBlack(depth ~/ swell.divisor(depth: depth) - 1),
           depth: depth,
         ),
         begin: begin,
         end: end,
+        tileMode: tileMode,
+        transform: transform,
       );
 
-  /// If a [Rect] `rect` is provided, then a gradient shader is generated
-  /// for this `TextStyle` instead of only a color. Also then consider the
-  /// local `TextDirection` as it will not be obtained by this static method.
+  /// TODO: Write doc.
   ///
   /// The `baseStyle` defaults to an empty `TextStyle` and is offered as a
   /// convenience parameter. This base style will be returned, copied with
-  /// the new color and shadows.
+  /// "Neu" `color` and `shadows`.
+  ///
+  /// If a [Rect] `rect` is provided, then a gradient shader is generated
+  /// for this `TextStyle` instead of only a color. Also then consider the
+  /// local `TextDirection` as it will not be obtained by this static method.
   static TextStyle textStyle({
     TextStyle baseStyle = const TextStyle(),
     Color color = lightWhite,
     Swell swell = Swell.emboss,
     int depth = 25,
     double spread = 5,
-    // FOR GRADIENT:
-    Curvature curvature = Curvature.flat,
+
+    /// FOR GRADIENT:
     Rect? rect,
-    // TextDirection? textDirection,
+    Curvature curvature = Curvature.flat,
+    TextDirection? textDirection,
   }) {
     final paint = Paint();
     if (rect != null) {
@@ -58,21 +171,22 @@ abstract class Neu {
         curvature: curvature,
         depth: depth,
         swell: swell,
-      ).createShader(rect /* textDirection: textDirection */);
+      ).createShader(rect, textDirection: textDirection);
     }
     final style = baseStyle.copyWith(
-      color: color.withBlack(depth ~/ swell.toShadeDivisor(depth: depth) - 1),
+      color: color.withBlack(depth ~/ swell.divisor(depth: depth) - 1),
       shadows: boxShadows(
         color: color,
         depth: depth,
         spread: spread,
         swell: swell,
-        offsetScalar: 0.5,
+        offsetScalar: 0.6,
       ),
     );
     return (paint.shader == null) ? style : style.copyWith(foreground: paint);
   }
 
+  /// TODO: Write doc.
   static List<BoxShadow> boxShadows({
     Color color = lightWhite,
     Swell swell = Swell.emboss,
@@ -81,34 +195,44 @@ abstract class Neu {
     double offsetScalar = 1.0,
     double scale = 1.0,
   }) {
-    final blur = spread / swell.asScalar;
+    final blur = spread / swell.scalar;
     final offset = spread * offsetScalar;
+    final isSwollen = swell.isSwollen;
 
-    final isSwollen = swell.asBool;
     final lightOffset = isSwollen ? -offset : offset;
     final light = BoxShadow(
-      color: color.withWhite(depth * swell.asScalar.toInt()),
+      color: color.withWhite(depth * swell.scalar.toInt()),
       offset: Offset(lightOffset, lightOffset),
-      spreadRadius: (swell.asScalar - 1),
+      spreadRadius: (swell.scalar - 1),
       blurRadius: blur,
     ).scale(scale);
 
     return [
+      // // color:
       // BoxShadow(
       //   color: color,
-      //   blurRadius: spread,
+      //   spreadRadius: 2.0,
+      //   // spreadRadius: (swell.scalar - 1),
+      //   blurRadius: blur,
       // ),
-      if (isSwollen) light,
+
+      // light:
+      if (!isSwollen) light,
+
+      // dark:
       BoxShadow(
-        color: color.withBlack(depth * swell.asScalar.toInt()),
+        color: color.withBlack((depth * swell.scalar).toInt()),
         offset: Offset(-lightOffset, -lightOffset),
-        spreadRadius: (swell.asScalar - 1),
+        spreadRadius: (swell.scalar - 1),
         blurRadius: blur,
       ).scale(scale),
-      if (!isSwollen) light,
+
+      // light:
+      if (isSwollen) light,
     ];
   }
 
+  /// TODO: Write doc.
   static BoxDecoration boxDecoration({
     Color color = lightWhite,
     Curvature curvature = Curvature.flat,
@@ -120,8 +244,8 @@ abstract class Neu {
     BoxBorder? border,
     DecorationImage? image,
     BlendMode? blendMode,
-    // AlignmentGeometry gradientBegin = Alignment.topLeft,
-    // AlignmentGeometry gradientEnd = Alignment.bottomRight,
+    AlignmentGeometry begin = Alignment.topLeft,
+    AlignmentGeometry end = Alignment.bottomRight,
   }) =>
       BoxDecoration(
         backgroundBlendMode: blendMode,
@@ -134,8 +258,8 @@ abstract class Neu {
           curvature: curvature,
           depth: depth,
           swell: swell,
-          // begin: gradientBegin,
-          // end: gradientEnd,
+          begin: begin,
+          end: end,
         ),
         boxShadow: boxShadows(
           color: color,
@@ -145,6 +269,7 @@ abstract class Neu {
         ),
       );
 
+  /// TODO: Write doc.
   static ShapeDecoration shapeDecoration({
     Color color = lightWhite,
     Curvature curvature = Curvature.flat,
@@ -152,20 +277,20 @@ abstract class Neu {
     int depth = 25,
     double spread = 7.5,
     ShapeBorder shape = const RoundedRectangleBorder(),
+    AlignmentGeometry begin = Alignment.topLeft,
+    AlignmentGeometry end = Alignment.bottomRight,
     DecorationImage? image,
-    // AlignmentGeometry gradientBegin = Alignment.topLeft,
-    // AlignmentGeometry gradientEnd = Alignment.bottomRight,
   }) =>
       ShapeDecoration(
-        image: image,
         shape: shape,
+        image: image,
         gradient: linearGradient(
           color: color,
           curvature: curvature,
           swell: swell,
           depth: depth,
-          // begin: gradientBegin,
-          // end:  gradientEnd,
+          begin: begin,
+          end: end,
         ),
         shadows: boxShadows(
           color: color,
@@ -175,142 +300,16 @@ abstract class Neu {
         ),
       );
 
-  // /// [morph.ShapeShadow]s support [Gradient]s as the paint \
-  // /// vs a standard [BoxShadow]'s tolerance of only `Color`s.
-  // ///
-  // /// ![side-by-side comparison: isGradient & matching Swell; then isGradient: false & reversed Swells](https://i.imgur.com/PiFRZ6x.png 'side-by-side comparison: isGradient & matching Swell; then isGradient: false & reversed Swells')
-  // ///
-  // /// ### Inset Shadows
-  // /// If this method is used to generate `ShapeShadow`s for inset shadows,
-  // /// such as `Appearance.insetShadows`, bear in mind the offset perspective
-  // /// for the color shading ordering will be flipped--unless using a gradient
-  // /// by `isGradient` set `true` (default).
-  // ///
-  // /// This gradient-based `List<ShapeShadow>` used as inset shadows would
-  // /// resemble an equivalent set of shadows used as standard background
-  // /// `ShapeShadow`s.
-  // ///
-  // /// A non-gradient return from this method (`isGradient` set `false`)
-  // /// designed as inset shadows would need its [Swell] `swell` reversed to
-  // /// opposite the expected behavior when used as background shadows to mimic
-  // /// those background shadows.
-  // ///
-  // /// ![isGradient == false, requires Swell reversal to achieve same effect with background and inset ShapeShadows](https://i.imgur.com/n2M9JNf.png 'isGradient == false, requires Swell reversal to achieve same effect with background and inset ShapeShadows')
-  // ///
-  // /// ```dart
-  // /// final appearance = Appearance(
-  // ///   // 🅰 The shadows from `Appearance` come not from this `decoration`
-  // ///   // (though it does provide a `List<BoxShadow>`) ...
-  // ///   decoration: Neu.boxDecoration(
-  // ///     color: Colors.red[900]!,
-  // ///     depth: 25,
-  // ///     // 🅰 (and so we may skip this spread parameter in this case)
-  // ///     // spread: 15,
-  // ///     swell: Swell.emboss,
-  // ///   ),
-  // ///   // 🅰 ...but from this separate field instead. As a major plus, these
-  // ///   // `ShapeShadow`s can be painted as a gradient instead of just a color!
-  // ///   shadows: Neu.shapeShadows(
-  // ///     isGradient: false, // default is true
-  // ///     color: Colors.red[900]!,
-  // ///     depth: 20,
-  // ///     spread: 12,
-  // ///     swell: Swell.emboss, // 🅱 Embossed shadows ...
-  // ///   ),
-  // ///   insetShadows: Neu.shapeShadows(
-  // ///     // 🅱 but because these ShapeShadows are not Gradients:
-  // ///     isGradient: false,
-  // ///     color: Colors.red[900]!,
-  // ///     depth: 20,
-  // ///     spread: 12,
-  // ///     // 🅱 ... the inset shadows need a Swell reversal to achieve the
-  // ///     // same visual effect as the background shadows.
-  // ///     swell: Swell.deboss,
-  // ///   ),
-  // /// );
-  // /// ```
-  // ///
-  // /// ![isGradient == true, same Swell achieves same effect for background or inset ShapeShadows](https://i.imgur.com/gyXvxju.png 'isGradient == true, same Swell achieves same effect for background or inset ShapeShadows')
-  // ///
-  // /// ```dart
-  // /// final appearance = Appearance(
-  // ///   decoration: Neu.boxDecoration(
-  // ///     color: Colors.red[900]!,
-  // ///     depth: 25,
-  // ///   ),
-  // ///   shadows: Neu.shapeShadows(
-  // ///     color: Colors.red[900]!,
-  // ///     depth: 30,
-  // ///     spread: 12,
-  // ///   ),
-  // ///   insetShadows: Neu.shapeShadows(
-  // ///     color: Colors.red[900]!,
-  // ///     depth: 35,
-  // ///     spread: 8,
-  // ///     // `swell` can be the same for inset shadows when using a gradient
-  // ///     // to achieve the same effect on the inside and out.
-  // ///   ),
-  // /// );
-  // /// ```
-  // static List<morph.ShapeShadow> shapeShadows({
-  //   Color color = lightWhite,
-  //   Swell swell = Swell.emboss,
-  //   int depth = 25,
-  //   double spread = 7.5,
-  //   double scale = 1.0,
-  //   double offsetScalar = 1.0,
-  //   // FOR GRADIENT:
-  //   bool isGradient = true,
-  //   Curvature curvature = Curvature.flat,
-  //   AlignmentGeometry gradientBegin = Alignment.topLeft,
-  //   AlignmentGeometry gradientEnd = Alignment.bottomRight,
-  // }) {
-  //   final blur = spread / swell.asScalar;
-  //   final offset = spread * swell.asScalar * offsetScalar;
-
-  //   final isSwollen = swell.asBool;
-  //   final gradient = linearGradient(
-  //     color: color,
-  //     curvature: swell.toCurvature(curvature),
-  //     depth: depth,
-  //     swell: swell,
-  //     begin: gradientBegin,
-  //     end: gradientEnd,
-  //   );
-  //   final light = color.withWhite(depth);
-  //   final lights = [light, light];
-  //   final dark = color.withBlack(depth);
-  //   final darks = [dark, dark];
-  //   final shadows = List.generate(
-  //         isGradient ? 3 : 1,
-  //         (index) => morph.ShapeShadow(
-  //           gradient: isGradient
-  //               ? gradient
-  //               // Create a flat gradient with two of the same color
-  //               : LinearGradient(colors: (isSwollen) ? lights : darks),
-  //           offset: index == 0
-  //               ? Offset(-offset, -offset)
-  //               : Offset(-offset / index * 2, -offset / index * 2),
-  //           spreadRadius: (swell.asScalar - 1) - (isGradient ? spread : 0),
-  //           blurRadius: isGradient ? blur * 2 : blur,
-  //         ).scale(scale),
-  //       ) +
-  //       List.generate(
-  //         isGradient ? 3 : 1,
-  //         (index) => morph.ShapeShadow(
-  //           gradient: isGradient
-  //               ? gradient
-  //               // Create a flat gradient with two of the same color
-  //               : LinearGradient(colors: (isSwollen) ? darks : lights),
-  //           offset: index == 0
-  //               ? Offset(offset, offset)
-  //               : Offset(offset / index * 2, offset / index * 2),
-  //           spreadRadius: (swell.asScalar - 1) - (isGradient ? spread : 0),
-  //           blurRadius: isGradient ? blur * 2 : blur,
-  //         ).scale(scale),
-  //       );
-  //   return !isSwollen
-  //       ? shadows.reversed.toList() // order shadow stack
-  //       : shadows;
-  // }
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(ColorProperty('color', color))
+      ..add(IntProperty('depth', depth))
+      ..add(DoubleProperty('spread', spread))
+      ..add(DiagnosticsProperty<Curvature>('curvature', curvature))
+      ..add(DiagnosticsProperty<Swell>('swell', swell))
+      ..add(DiagnosticsProperty<BorderRadius>('borderRadius', borderRadius))
+      ..add(DiagnosticsProperty<ShapeBorder>('shape', shape));
+  }
 }

@@ -5,5 +5,6 @@
 /// #### API References: [`Neu`](https://pub.dev/documentation/neu/latest/neu/Neu-class.html) | [`Curvature`](https://pub.dev/documentation/neu/latest/neu/Curvature-class.html) | [`Swell`](https://pub.dev/documentation/neu/latest/neu/Swell-class.html)
 library neu;
 
-// For links here in doc.
-// Hover for more info.
+export 'src/models/curvature.dart';
+export 'src/models/swell.dart';
+export 'src/neu.dart';

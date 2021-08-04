@@ -33,12 +33,12 @@ packages:
     source: sdk
     version: "0.0.99"
   spectrum:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
-      path: "../spectrum"
-      relative: true
-    source: path
-    version: "0.1.0"
+      name: spectrum
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1+1"
   typed_data:
     dependency: transitive
     description:
