@@ -228,7 +228,8 @@ class _SliderDemoState extends State<SliderDemo> {
     );
 
     SizedBox fixedWidth({double width = 200, required String label}) =>
-        SizedBox(width: width, child: FittedBox(child: Text(label)));
+        SizedBox(
+            width: width, child: FittedBox(child: Text(label, style: style)));
 
     return
         //  AnimatedDefaultTextStyle(

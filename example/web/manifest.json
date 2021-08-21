@@ -3,9 +3,9 @@
     "short_name": "neu",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "An ImageToo or DecorationImageToo is used to render images from the expected array of sources, but their `repeat` property is expanded. New options to tile an image seamlessly with alternating mirroring!",
+    "background_color": "#304FFE",
+    "theme_color": "#304FFE",
+    "description": "A helper for generating outstanding neumorphic-conforming designs.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

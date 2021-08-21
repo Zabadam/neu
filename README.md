@@ -3,16 +3,27 @@
 #### API References: [`Neu`](https://pub.dev/documentation/neu/latest/neu/Neu-class.html) | [`NeuContainer`](https://pub.dev/documentation/neu/latest/neu/NeuContainer-class.html) | [`Neu.toggle`](https://pub.dev/documentation/neu/latest/neu/Neu/Neu.toggle.html) | [`NeuToggle`](https://pub.dev/documentation/neu/latest/neu/NeuToggle-class.html) | [`Curvature`](https://pub.dev/documentation/neu/latest/neu/Curvature-class.html) | [`Swell`](https://pub.dev/documentation/neu/latest/neu/Swell-class.html)
 ##### [🐸 Zaba.app ― simple packages, simple names.](#-zabaapp--simple-packages-simple-nameshttpspubdevpublisherszabaapppackages-other-flutter-packages-published-by-zabaapp)
 
-[![TEXT](https://raw.githubusercontent.com/Zabadam/neu/main/doc/curvature.gif)](https://raw.githubusercontent.com/Zabadam/spectrum/main/doc/curvature.gif 'Click for full size | TEXT')
-[![TEXT](https://raw.githubusercontent.com/Zabadam/neu/main/doc/depth.gif)](https://raw.githubusercontent.com/Zabadam/spectrum/main/doc/depth.gif 'Click for full size | TEXT')
-[![TEXT](https://raw.githubusercontent.com/Zabadam/neu/main/doc/lightSource.gif)](https://raw.githubusercontent.com/Zabadam/spectrum/main/doc/lightSource.gif 'Click for full size | TEXT')
-[![TEXT](https://raw.githubusercontent.com/Zabadam/neu/main/doc/spread.gif)](https://raw.githubusercontent.com/Zabadam/spectrum/main/doc/spread.gif 'Click for full size | TEXT')
-[![TEXT](https://raw.githubusercontent.com/Zabadam/neu/main/doc/swell.gif)](https://raw.githubusercontent.com/Zabadam/spectrum/main/doc/swell.gif 'Click for full size | TEXT')
-[![TEXT](https://raw.githubusercontent.com/Zabadam/neu/main/doc/toggle_small.gif)](https://raw.githubusercontent.com/Zabadam/spectrum/main/doc/toggle_small.gif 'Click for full size | TEXT')
-[![TEXT](https://raw.githubusercontent.com/Zabadam/neu/main/doc/toggle_big.gif)](https://raw.githubusercontent.com/Zabadam/spectrum/main/doc/toggle_big.gif 'Click for full size | TEXT')
+# [Interactive Web Demo](https://neu.zaba.app)
 
-[![TEXT](https://raw.githubusercontent.com/Zabadam/neu/main/doc/Curvature_Swell.png)](https://raw.githubusercontent.com/Zabadam/spectrum/main/doc/Curvature_Swell.png 'Click for full size | TEXT')
-[![TEXT](https://raw.githubusercontent.com/Zabadam/neu/main/doc/Neu.textStyle.png)](https://raw.githubusercontent.com/Zabadam/spectrum/main/doc/Neu.textStyle.png 'Click for full size | TEXT')
+[![TEXT](https://github.com/Zabadam/neu/blob/main/doc/curvature.gif?raw=true)](https://github.com/Zabadam/neu/blob/main/doc/curvature.gif?raw=true 'Click for full size | TEXT')
+
+[![TEXT](https://github.com/Zabadam/neu/blob/main/doc/depth.gif?raw=true)](https://github.com/Zabadam/neu/blob/main/doc/depth.gif?raw=true 'Click for full size | TEXT')
+
+[![TEXT](https://github.com/Zabadam/neu/blob/main/doc/lightSource.gif?raw=true)](https://github.com/Zabadam/neu/blob/main/doc/lightSource.gif?raw=true 'Click for full size | TEXT')
+
+[![TEXT](https://github.com/Zabadam/neu/blob/main/doc/spread.gif?raw=true)](https://github.com/Zabadam/neu/blob/main/doc/spread.gif?raw=true 'Click for full size | TEXT')
+
+[![TEXT](https://github.com/Zabadam/neu/blob/main/doc/swell.gif?raw=true)](https://github.com/Zabadam/neu/blob/main/doc/swell.gif?raw=true 'Click for full size | TEXT')
+
+
+[![TEXT](https://github.com/Zabadam/neu/blob/main/doc/toggle_big.gif?raw=true)](https://github.com/Zabadam/neu/blob/main/doc/toggle_big.gif?raw=true 'Click for full size | TEXT')
+
+[![TEXT](https://github.com/Zabadam/neu/blob/main/doc/toggle_small.gif?raw=true)](https://github.com/Zabadam/neu/blob/main/doc/toggle_small.gif?raw=true 'Click for full size | TEXT')
+
+
+[![TEXT](https://github.com/Zabadam/neu/blob/main/doc/Curvature_Swell.png?raw=true)](https://github.com/Zabadam/neu/blob/main/doc/Curvature_Swell.png?raw=true 'Click for full size | TEXT')
+
+[![TEXT](https://github.com/Zabadam/neu/blob/main/doc/Neu.textStyle.png?raw=true)](https://github.com/Zabadam/neu/blob/main/doc/Neu.textStyle.png?raw=true 'Click for full size | TEXT')
 
 ## 🛣️ Roadmap
 1. Offer bespoke `NeuFoo` pre-built `Widget`s. 
