@@ -1,6 +1,6 @@
 name: neu
 description: >
-
+  A helper for generating outstanding neumorphic-conforming designs.
 version: 0.1.0
 repository: https://github.com/Zabadam/neu
 issue_tracker: https://github.com/Zabadam/neu/issues

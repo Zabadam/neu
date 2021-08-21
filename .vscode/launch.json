@@ -1,0 +1,38 @@
+{
+    "configurations": [
+        {
+            "name": "Edge: HTML",
+            "program": "lib/main.dart",
+            "cwd": "example",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "edge",
+            "args": [
+                "--web-renderer html"
+            ],
+            "toolArgs": [
+                "--web-renderer html"
+            ],
+            "env": [
+                "--web-renderer html"
+            ],
+        },
+        {
+            "name": "Edge: CanvasKit",
+            "program": "lib/main.dart",
+            "cwd": "example",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "edge",
+            "args": [
+                "--web-renderer canvaskit"
+            ],
+            "toolArgs": [
+                "--web-renderer html"
+            ],
+            "env": [
+                "--web-renderer html"
+            ],
+        }
+    ]
+}
