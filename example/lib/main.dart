@@ -4,6 +4,8 @@ import 'package:neu/neu.dart';
 import 'package:spectrum/spectrum.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// ignore_for_file: public_member_api_docs
+
 void main() => runApp(const DemoFrame());
 
 /// [MaterialApp] frame.
@@ -738,6 +740,7 @@ Widget buildSmallView({
                   textDepth: textDepth,
                 ),
       ]
+        // Spacers
         ..insert(0, sizedBox)
         ..insert(7, sizedBox)
         ..insert(14, sizedBox)

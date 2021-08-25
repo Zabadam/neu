@@ -50,7 +50,7 @@ class NeuToggle extends StatefulWidget {
   ///
   /// * [Neu], the base class defining this design system.
   /// * [Neu.toggle] for more information on the concept of "toggling" in
-  ///   *[Neu]morphism*.
+  ///   *[Neu]morphism*, employed by this widget.
   /// * [AnimatedContainer], which this `Widget` will render and from which
   ///   many if its parameters are copied.
   const NeuToggle({
@@ -312,7 +312,8 @@ class NeuToggle extends StatefulWidget {
       ..add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
           defaultValue: null))
       ..add(DiagnosticsProperty<Decoration>(
-          'foregroundDeco', foregroundDecoration, defaultValue: null))
+          'foregroundDeco', foregroundDecoration,
+          defaultValue: null))
       ..add(ObjectFlagProperty<Matrix4>.has('transform', transform))
       ..add(DiagnosticsProperty<AlignmentGeometry>(
           'transformAlignment', transformAlignment,
@@ -336,14 +337,17 @@ class _NeuToggleState extends State<NeuToggle> {
       onLongPress: toggle,
       onLongPressUp: toggle,
       child: AnimatedContainer(
-        color: widget.insets == EdgeInsets.zero
-            ? Colors.transparent
-            : widget.color,
         width: widget.width,
         height: widget.height,
         constraints: widget.constraints,
         margin: widget.margin,
         padding: widget.insets,
+        decoration: ShapeDecoration(
+          shape: widget.shape,
+          color: widget.insets == EdgeInsets.zero
+              ? Colors.transparent
+              : widget.color,
+        ),
         duration: widget.duration,
         curve: widget.curve,
         child: AnimatedContainer(

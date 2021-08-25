@@ -255,12 +255,15 @@ class NeuContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AnimatedContainer(
-        color: insets == EdgeInsets.zero ? Colors.transparent : color,
         width: width,
         height: height,
         constraints: constraints,
         margin: margin,
         padding: insets,
+        decoration: ShapeDecoration(
+          shape: shape,
+          color: insets == EdgeInsets.zero ? Colors.transparent : color,
+        ),
         duration: duration,
         curve: curve,
         child: AnimatedContainer(
@@ -309,7 +312,8 @@ class NeuContainer extends StatelessWidget {
       ..add(DiagnosticsProperty<AlignmentGeometry>('alignment', alignment,
           showName: false, defaultValue: null))
       ..add(DiagnosticsProperty<Decoration>(
-          'foregroundDeco', foregroundDecoration, defaultValue: null))
+          'foregroundDeco', foregroundDecoration,
+          defaultValue: null))
       ..add(ObjectFlagProperty<Matrix4>.has('transform', transform))
       ..add(DiagnosticsProperty<AlignmentGeometry>(
           'transformAlignment', transformAlignment,

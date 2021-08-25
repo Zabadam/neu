@@ -1,6 +1,10 @@
 /// Neumorphic implementation by [new Neu] object manipulation such as
 /// [Neu.buildBoxDecoration], as an example, or by direct static methods
 /// such as [Neu.boxDecoration].
+///
+/// A secondary constructor [new Neu.toggle] drives its visual appearance by a
+/// series of toggleable flags. Objects made with this constructor can easily be
+/// swapped from one visual orientation to another.
 library neu;
 
 import 'common.dart';
@@ -8,22 +12,22 @@ import 'widgets/container.dart';
 import 'widgets/toggle.dart';
 
 /// A ***[Neu]morphic***, or *new [skeuomorphic](https://en.wikipedia.org/wiki/Skeuomorph)*,
-/// helper class with a variety of static and instance methods for the
-/// generation of shaded decorations conforming to the *neumorphic* design
+/// helper class with a variety of static and instance methods for the simple
+/// generation of shaded decorations conforming to the neumorphic design
 /// concept.
 ///
 /// These designs are often solid in terms of color variety: genreally a
-/// dominant color is used as a backdrop as well as the color of controls and
-/// elements. These items that typically appear "on" or "above the surface"
-/// in standard design systems are intended in *skeumorphism* to extrude from
-/// or rise out of/into the surface.
+/// **dominant color** is used as a backdrop as well as the color of controls
+/// and elements. These items that typically appear **on** or "above" the
+/// surface in standard design systems are intended in neumorphism to extrude
+/// *from* or "rise out" or into the surface.
 ///
-/// This extrusion, which can be imagined as "clay"- or "rubber"-like, is
+/// This extrusion, which can be imagined as *clay*- or *rubber*-like, is
 /// achieved by a combination of same-color elements and background, contrasting
-/// shadows, slight variances in color shading and, potentially, gradients.
+/// shadows, slight variances in color shading and (potentially) gradients for
+/// the impression of **natural lighting**.
 ///
 /// {@template neu.properties}
-/// ---
 /// ---
 /// ##### NEUMORPHIC DEFINITION
 ///
@@ -56,6 +60,9 @@ import 'widgets/toggle.dart';
 /// - Combining [Swell.deboss] with [Curvature.concave], the decoration will
 /// appear like a bubble popped and depressed into the background.
 ///
+/// This property, especially when combined with varying `Curvature`s can
+/// really "sell" the *pressed* or *unpressed* effect.
+///
 /// ## Override Source of "Light"
 ///
 /// The [lightSource] is always set by default as [defaultLightSource], which
@@ -83,7 +90,7 @@ import 'widgets/toggle.dart';
 ///
 /// {@endtemplate}
 /// ---
-/// ---
+///
 /// ##### NEU USAGE
 ///
 /// ## Using `Neu` Static Methods
@@ -134,7 +141,6 @@ import 'widgets/toggle.dart';
 /// - [buildShapeDecoration]
 ///
 /// ---
-/// ---
 /// #### SEE ALSO:
 ///
 /// * [NeuTextSpec], a container object for a few [TextStyle]-oriented
@@ -148,19 +154,21 @@ import 'widgets/toggle.dart';
 ///   states to drive animations between various [Curvature]s and [Swell]s by
 ///   rendering with [Neu.toggle] while also handling its own [GestureDetector].
 class Neu with Diagnosticable {
-  /// A ***neumorphic***, or *new [skeuomorphic](https://en.wikipedia.org/wiki/Skeuomorph)*,
-  /// helper class with a variety of methods for the generation of shaded
-  /// decorations conforming to the *neumorphic* design concept.
+  /// A ***[Neu]morphic***, or *new [skeuomorphic](https://en.wikipedia.org/wiki/Skeuomorph)*,
+  /// helper class with a variety of static and instance methods for the simple
+  /// generation of shaded decorations conforming to the neumorphic design
+  /// concept.
   ///
   /// These designs are often solid in terms of color variety: genreally a
-  /// dominant color is used as a backdrop as well as the color of controls and
-  /// elements. These items that typically appear "on" or "above the surface"
-  /// in standard design systems are intended in *skeumorphism* to extrude from
-  /// or rise out of/into the surface.
+  /// **dominant color** is used as a backdrop as well as the color of controls
+  /// and elements. These items that typically appear **on** or "above" the
+  /// surface in standard design systems are intended in neumorphism to extrude
+  /// *from* or "rise out" or into the surface.
   ///
-  /// This extrusion, which can be imagined as "clay" or "rubber" like, is
-  /// achieved by a combination of contrasting shadows, slight variances in
-  /// color shading and, potentially, gradients.
+  /// This extrusion, which can be imagined as *clay*- or *rubber*-like, is
+  /// achieved by a combination of same-color elements and background,
+  /// contrasting shadows, slight variances in color shading and (potentially)
+  /// gradients for the impression of **natural lighting**.
   ///
   /// ---
   ///
@@ -191,7 +199,7 @@ class Neu with Diagnosticable {
   ///
   ///   /// These flags are only valid for `Neu.toggle` where they drive the
   ///   /// curvature and swell based on true or false states.
-  ///   // isPressed: isPressed,
+  ///   // isToggled: isToggled,
   ///   // isFlat: true,
   ///   // isSuper: true,
   ///
@@ -238,9 +246,9 @@ class Neu with Diagnosticable {
   const Neu({
     this.color = lightWhite,
     this.depth = defaultDepth,
+    this.spread = defaultSpread,
     this.curvature = Curvature.convex,
     this.swell = Swell.emboss,
-    this.spread = defaultSpread,
     this.lightSource = defaultLightSource,
     this.neuTextSpec = const NeuTextSpec(),
     this.borderRadius = BorderRadius.zero,
@@ -344,6 +352,18 @@ class Neu with Diagnosticable {
   /// Default is [defaultDepth], `25`.
   final int depth;
 
+  /// In terms of *[Neu]morphic* [Shadow]s, the argument [spread] is responsible
+  /// for determining how wide an area the effect covers and how blurry the
+  /// shadows appear.
+  ///
+  /// The default is [defaultSpread], `7.5`.
+  ///
+  /// The method [buildLinearGradient] ignores this property as it corresponds
+  /// to [Shadow]s, a visual element missing from a [LinearGradient]. These
+  /// gradients may be combined with shadows in other situations, where [spread]
+  /// will then be considered.
+  final double spread;
+
   /// A [Curvature] is a description of the appearance of the actual surface of
   /// the decoration. A [Curvature.flat] decoration has no gradient (solid-color
   /// [Gradient]), while [Curvature.convex] orders a light -> dark gradient in a
@@ -381,18 +401,6 @@ class Neu with Diagnosticable {
   /// The effect is made more dramatic by [Swell.superemboss] or
   /// [Swell.superdeboss].
   final Swell swell;
-
-  /// In terms of *[Neu]morphic* [Shadow]s, the argument [spread] is responsible
-  /// for determining how wide an area the effect covers and how blurry the
-  /// shadows appear.
-  ///
-  /// The default is [defaultSpread], `7.5`.
-  ///
-  /// The method [buildLinearGradient] ignores this property as it corresponds
-  /// to [Shadow]s, a visual element missing from a [LinearGradient]. These
-  /// gradients may be combined with shadows in other situations, where [spread]
-  /// will then be considered.
-  final double spread;
 
   /// The [lightSource] is always set by default as [defaultLightSource], which
   /// is [Alignment.topLeft]. This gives the illusion of lighting the entire
@@ -465,7 +473,7 @@ class Neu with Diagnosticable {
   /// Does not consider [spread] nor [shape], [borderRadius].
   /// Ignores [neuTextSpec].
   ///
-  /// {@macro neu.properties}
+  /// TODO: Write more details.
   Gradient get buildLinearGradient => Neu.linearGradient(
         color: color,
         depth: depth,
@@ -476,7 +484,7 @@ class Neu with Diagnosticable {
 
   /// Does not consider [shape], [borderRadius].
   ///
-  /// {@macro neu.properties}
+  /// TODO: Write more details.
   TextStyle get buildTextStyle => Neu.textStyle(
         color: color,
         depth: _isToggled == true ? (depth * _depthMultiplier!).round() : depth,
@@ -491,7 +499,7 @@ class Neu with Diagnosticable {
 
   /// Does not consider [shape], [borderRadius]. Ignores [neuTextSpec].
   ///
-  /// {@macro neu.properties}
+  /// TODO: Write more details.
   List<BoxShadow> get buildBoxShadows => Neu.boxShadows(
         color: color,
         depth: _isToggled == true ? (depth * _depthMultiplier!).round() : depth,
@@ -503,7 +511,7 @@ class Neu with Diagnosticable {
 
   /// Does not consider [shape]. Ignores [neuTextSpec].
   ///
-  /// {@macro neu.properties}
+  /// TODO: Write more details.
   BoxDecoration get buildBoxDecoration => Neu.boxDecoration(
         color: color,
         depth: _isToggled == true ? (depth * _depthMultiplier!).round() : depth,
@@ -516,7 +524,7 @@ class Neu with Diagnosticable {
 
   /// Does not consider [borderRadius]. Ignores [neuTextSpec].
   ///
-  /// {@macro neu.properties}
+  /// TODO: Write more details.
   ShapeDecoration get buildShapeDecoration => Neu.shapeDecoration(
         color: color,
         depth: _isToggled == true ? (depth * _depthMultiplier!).round() : depth,
@@ -536,8 +544,6 @@ class Neu with Diagnosticable {
   /// This static method used entirely on its own is not that useful. Instead,
   /// this method is mostly employed by other methods to generate their required
   /// gradient property.
-  ///
-  /// {@macro neu.properties}
   static Gradient linearGradient({
     required Color color,
     required int depth,
@@ -566,8 +572,6 @@ class Neu with Diagnosticable {
   /// the glyphs.
   /// - Also then consider the [textDirection] as it will not be obtained by
   ///   this static method automatically.
-  ///
-  /// {@macro neu.properties}
   static TextStyle textStyle({
     TextStyle baseStyle = const TextStyle(),
     required Color color,
@@ -605,12 +609,12 @@ class Neu with Diagnosticable {
     return (paint.shader == null) ? style : style.copyWith(foreground: paint);
   }
 
+  /// TODO: Write more details.
+  ///
   /// See [BoxShadow.scale] for the usage of double [scale].
   ///
   /// Use [offsetScalar] to make the effect less dramatic and scale the offsets
   /// for use as a [textStyle] for example.
-  ///
-  /// {@macro neu.properties}
   static List<BoxShadow> boxShadows({
     required Color color,
     required int depth,
@@ -655,7 +659,7 @@ class Neu with Diagnosticable {
     ];
   }
 
-  /// {@macro neu.properties}
+  /// TODO: Write doc.
   static BoxDecoration boxDecoration({
     required Color color,
     required int depth,
@@ -692,7 +696,7 @@ class Neu with Diagnosticable {
         ),
       );
 
-  /// {@macro neu.properties}
+  /// TODO: Write doc.
   static ShapeDecoration shapeDecoration({
     required Color color,
     required int depth,
@@ -724,7 +728,7 @@ class Neu with Diagnosticable {
       );
 
   /// 📋 Create a [new Neu] object that has the same properties as `this` one
-  /// except for any optional parameters passed through the [copyWith] method.
+  /// except for any optional parameters passed through this [copyWith] method.
   Neu copyWith({
     Color? color,
     int? depth,
@@ -748,8 +752,9 @@ class Neu with Diagnosticable {
         shape: shape ?? this.shape,
       );
 
-  /// 📋 Create a [new Neu] object that has the same properties as `this` one
-  /// except for any optional parameters passed through the [copyWith] method.
+  /// 📋 Create a [new Neu.toggle] object that has the same properties as `this`
+  /// one except for any optional parameters passed through this
+  /// [copyWithToggle] method.
   Neu copyWithToggle({
     Color? color,
     int? depth,
@@ -799,8 +804,8 @@ class Neu with Diagnosticable {
         'isToggled',
         value: _isToggled,
         defaultValue: null,
-        ifFalse: 'toggleable: isPressed = false',
-        ifTrue: 'toggleable: isPressed = true',
+        ifFalse: 'toggleable: isToggled = false',
+        ifTrue: 'toggleable: isToggled = true',
       ))
       ..add(DoubleProperty(
         'depthMultiplier',
